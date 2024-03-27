@@ -3,6 +3,7 @@ import os
 
 folder = 'TP Data 2024 - FISA'
 output = 'tache1'
+
 def chercher_fichiers_identiques(input_folder):
     # Dictionnaire pour stocker les fichiers identiques
     fichiers_identiques = {}
@@ -12,56 +13,56 @@ def chercher_fichiers_identiques(input_folder):
         for file_name in files:
             # Construction du chemin complet du fichier
             file_path = os.path.join(root, file_name)
-            # Extraction du nom du fichier sans l'extension
-            base_name, _ = os.path.splitext(file_name)
+
 
             # Ajouter le chemin du fichier au dictionnaire
-            if base_name not in fichiers_identiques:
-                fichiers_identiques[base_name] = [file_path]
+            if file_name not in fichiers_identiques:
+                fichiers_identiques[file_name] = [file_path]
             else:
-                fichiers_identiques[base_name].append(file_path)
+                fichiers_identiques[file_name].append(file_path)
 
     return fichiers_identiques
-def fusionner_fichiers(dataframes):
-    # Fusionner les DataFrames dans une liste
-    merged_data = pd.concat(dataframes)
-    # Organiser chronologiquement
-    merged_data.sort_values(by='date', inplace=True)  # Remplacez 'date_colonne' par le nom de votre colonne de date
-    # Supprimer les doublons
-    merged_data.drop_duplicates(inplace=True)
-    
-    return merged_data
-def lire_fichier(file_path):
-    _, ext = os.path.splitext(file_path)
-    if ext == '.csv':
-        return pd.read_csv(file_path)
-    elif ext == '.txt':
-        return pd.read_csv(file_path, delimiter='\t')  # Adapter le délimiteur selon vos besoins pour les fichiers texte
-    else:
-        raise ValueError(f"Extension de fichier non prise en charge : {ext}")
-# Liste pour stocker les DataFrames fusionnés
-merged_dfs = []
+
 resultat = chercher_fichiers_identiques(folder)
-n=0
-# Afficher le résultat
+
+# Traiter les fichiers identiques
 for nom_fichier, chemins in resultat.items():
-    if len(chemins) > 2:
-        # Liste pour stocker les DataFrames de chaque fichier identique
-        dfs = []
-        print(f"Fichiers identiques pour '{nom_fichier}':")
-        for chemin in chemins:
-            print(chemin)
-            df = lire_fichier(chemin)
-            dfs.append(df)
-          # Fusionner les DataFrames et ajouter au résultat final
-        merged_df = fusionner_fichiers(dfs)
-        merged_dfs.append(merged_df)
+    if len(chemins) > 1 :
+        output_file_path = os.path.join(output, nom_fichier)
+        print(output_file_path)
+           # Vérifier si le fichier de sortie existe déjà
+        if os.path.exists(output_file_path):
+            print(f"Le fichier '{output_file_path}' existe déjà.")
+        else:
+            print(f"Traitement des fichiers pour '{nom_fichier}':")
+            dfs = [] 
+            if nom_fichier.endswith(".csv"):
+                for chemin in chemins:
+                    df = pd.read_csv(chemin,comment="#")
+                    dfs.append(df)
+                concatenated_df = pd.concat(dfs, ignore_index=True)
+                print(concatenated_df.info())
+                try:
+                    # Vérifier les échantillons en double
+                    duplicates = concatenated_df.duplicated()
 
+                    # Afficher les échantillons en double
+                    print("Échantillons en double :")
+                    print(concatenated_df[duplicates])
 
-# Fusionner tous les DataFrames
-final_merged_df = pd.concat(merged_dfs)
+                    # Compter le nombre d'échantillons en double
+                    nombre_doublons = duplicates.sum()
+                    print(f"Nombre total d'échantillons en double : {nombre_doublons}")
+                    # Supprimer les échantillons en double
+                    concatenated_df.drop_duplicates(inplace=True)
+                    print("Echantillons en double ont été supprimé")
+                    # Trier par date
+                    concatenated_df['date'] = pd.to_datetime(concatenated_df['date'])
+                    concatenated_df = concatenated_df.sort_values(by='date')
+                    print("trié :D ")
+                except Exception as e :
+                    print(f"Error has occured {e}")
+                # Enregistrer le DataFrame résultant dans un nouveau fichier CSV
+                concatenated_df.to_csv(output_file_path, index=False)
+                print(f"Fichier '{output_file_path}' créé avec succès.")
 
-# Enregistrer le résultat dans un fichier unique
-final_merged_df.to_csv(os.path.join(output, 'resultat_final.csv'), index=False)  # Modifier le chemin selon vos besoins
-
-print("Fusion et enregistrement terminés.")
