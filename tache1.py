@@ -178,27 +178,26 @@ def cleanup_files(input_files):
         print(f"{'-' * 10} {nom_fichier} {'-' * 10}")
         if len(chemins) > 1 :
             output_file_path = os.path.join(output, f"{filename}.csv")
-               # Vérifier si le fichier de sortie existe déjà
-            if os.path.exists(output_file_path):
-                print(f"Le fichier '{output_file_path}' existe déjà.")
-                # TODO : debug matplotlib hanging
-                # print("Saving df to memory...")
-                # df = pd.read_csv(output_file_path,sep=",")
-                # dfs[filename.lower()] = df
-                # print("Done saving df to memory !")
-            else:
-                df = cleanup_by_files_type(nom_fichier, chemins)
-                print("Saving df to memory...")
+            #    # Vérifier si le fichier de sortie existe déjà
+            # if os.path.exists(output_file_path):
+            #     print(f"Le fichier '{output_file_path}' existe déjà.")
+            #     print("Saving df to memory...")
+            #     df = pd.read_csv(output_file_path, sep=',')
+            #     dfs[filename.lower()] = df
+            #     print("Done saving df to memory !")
+            # else:
+            df = cleanup_by_files_type(nom_fichier, chemins)
+            print("Saving df to memory...")
 
-                dfs[filename.lower()] = df
+            dfs[filename.lower()] = df
 
-                print("Done saving df to memory !")
+            print("Done saving df to memory !")
 
-                print("Saving df to file...")
+            print("Saving df to file...")
 
-                df.to_csv(output_file_path, index=False)
+            df.to_csv(output_file_path, index=False)
 
-                print("Done saving file !")
+            print("Done saving file !")
         print("-" * 20)
 
     print("Done cleaning up files !")
@@ -206,7 +205,6 @@ def cleanup_files(input_files):
 
 files_to_clean = chercher_fichiers_identiques(folder)
 files_clean = cleanup_files(files_to_clean)
-print(files_clean)
 plt.figure(figsize=(10, 2))  # Plot overview of the files
 date_format = mdates.DateFormatter('%d-%b')
 
@@ -216,9 +214,9 @@ plt.title("MOD1 (Temperature x Time)")
 print("Plotting mod1...")
 plt.plot(files_clean['mod1']['Time'],files_clean['mod1']['Temperature'])
 plt.gca().xaxis.set_major_formatter(date_format)
+plt.xticks(rotation=45)
 print("Done Plotting mod1 !")
 
-plt.xticks(rotation=45)
 
 plt.subplot(3,2,2) # MOD2
 plt.subplots_adjust(top=8)
@@ -248,19 +246,23 @@ plt.gca().xaxis.set_major_formatter(date_format)
 plt.xticks(rotation=45)
 print("Done plotting pico !")
 
+print("Plotting thick...")
 plt.subplot(3,2,5) # Piano Thick
 plt.subplots_adjust(top=8)
 plt.title("THICK (TGS2620 x Time)")
 plt.plot(files_clean['thick']['Time'], files_clean['thick']['piano_TGS2620I00'])
 plt.gca().xaxis.set_major_formatter(date_format)
 plt.xticks(rotation=45)
+print("Done plotting thick !")
 
+print("Plotting thin...")
 plt.subplot(3,2,6) # Piano Thin
 plt.subplots_adjust(top=8)
 plt.title("THIN (GM102B x Time)")
 plt.plot(files_clean['thin']['Time'],files_clean['thin']['piano_GM102BI00'])
 plt.gca().xaxis.set_major_formatter(date_format)
 plt.xticks(rotation=45)
+print("Done plotting thin !")
 
 plt.subplots_adjust(left=0.1, bottom=0.06, right=0.9, top=0.96, wspace=0.2, hspace=0.2)
 plt.savefig("plot.png")
