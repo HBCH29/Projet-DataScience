@@ -33,13 +33,6 @@ print(df_excel)
 
 instances = {}
 
-# as1_instances = []
-# len_as1 = 0
-
-# nett_instances = []
-# len_nett = 0
-
-
 for idact, act in enumerate(df_excel['activity']):
     start = df_excel['Started'][idact]
     end = df_excel['Ended'][idact]
@@ -49,18 +42,6 @@ for idact, act in enumerate(df_excel['activity']):
         instances[act] = [new_instance]
     else :
         instances[act].append(new_instance)
-
-# for idact, act in enumerate(df_excel['activity']):
-#     start = df_excel['Started'][idact]
-#     end = df_excel['Ended'][idact]
-#     print(act)
-
-#     # AS1
-#     if act == 'AS1':
-#         as1new = base[(base['Time'] >= start) & (base['Time'] <= end)].reset_index(drop=True).sort_values(by='Time').drop(columns='Time')
-#         len_as1 += len(as1new)
-#         as1_instances.append(as1new)
-
 
 def averageSignature(instances):
 
@@ -93,7 +74,6 @@ i = 0
 for activity in instances.keys():
     i+= 1
     plt.subplot(5,2,i)
-    # plt.subplots_adjust(top=1)
     avg = averageSignature(instances[activity])
     for column in avg.columns:
         plt.plot(avg.index, avg[column])
@@ -102,43 +82,6 @@ for activity in instances.keys():
     plt.title(f'Average signature of {activity}')
     plt.xlabel('Number of Samples')
     plt.ylabel('Sensor Measurements')
-# for column in avgAS1.columns:
-#     plt.plot(avgAS1.index, avgAS1[column])
-# plt.grid(True)
-
 
 fig.tight_layout()
 plt.show()
-    # aligned_instances = pd.DataFrame()
-    
-    # for instance in instances:
-    #     instance['Time'] = instance.index - instance.index[0]
-    #     instance = instance.set_index('Time')
-    #     aligned_instances = aligned_instances.add(instance, fill_value=0)
-    
-    # aligned_instances.interpolate(method='linear', inplace=True)
-    
-    # avg_signature = aligned_instances.mean(axis=4)
-    
-    # avg_signature *= (average_length / len(aligned_instances))
-    
-    # return avg_signature
-
-
-# avgAS1 = averageSignature(as1_instances, len_as1)
-
-# def average_activity_across_instances(instances, length):
-#     df_full = pd.DataFrame()
-
-#     for instance in instances:
-#         df_full = pd.concat((df_full, instance))
-#     by_row_index = df_full.groupby(df_full.index)
-#     df_means = by_row_index.mean()
-
-#     print(df_means)
-# print(average_activity_across_instances(as1_instances, len_as1))
-
-# def averageSignature(instances, average_length):
-#     print(instances)
-# avgAS1 = averageSignature(as1_instances, len_as1)
-
