@@ -1,0 +1,56 @@
+[
+    {
+        "label": "pandas",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "pandas",
+        "description": "pandas",
+        "detail": "pandas",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "chercher_fichiers_identiques",
+        "kind": 2,
+        "importPath": "tache1",
+        "description": "tache1",
+        "peekOfCode": "def chercher_fichiers_identiques(input_folder):\n    # Dictionnaire pour stocker les fichiers identiques\n    fichiers_identiques = {}\n    # Parcourir récursivement les sous-dossiers\n    for root, dirs, files in os.walk(input_folder):\n        for file_name in files:\n            # Construction du chemin complet du fichier\n            file_path = os.path.join(root, file_name)\n            # Ajouter le chemin du fichier au dictionnaire\n            if file_name not in fichiers_identiques:",
+        "detail": "tache1",
+        "documentation": {}
+    },
+    {
+        "label": "folder",
+        "kind": 5,
+        "importPath": "tache1",
+        "description": "tache1",
+        "peekOfCode": "folder = 'TP Data 2024 - FISA'\noutput = 'tache1'\ndef chercher_fichiers_identiques(input_folder):\n    # Dictionnaire pour stocker les fichiers identiques\n    fichiers_identiques = {}\n    # Parcourir récursivement les sous-dossiers\n    for root, dirs, files in os.walk(input_folder):\n        for file_name in files:\n            # Construction du chemin complet du fichier\n            file_path = os.path.join(root, file_name)",
+        "detail": "tache1",
+        "documentation": {}
+    },
+    {
+        "label": "output",
+        "kind": 5,
+        "importPath": "tache1",
+        "description": "tache1",
+        "peekOfCode": "output = 'tache1'\ndef chercher_fichiers_identiques(input_folder):\n    # Dictionnaire pour stocker les fichiers identiques\n    fichiers_identiques = {}\n    # Parcourir récursivement les sous-dossiers\n    for root, dirs, files in os.walk(input_folder):\n        for file_name in files:\n            # Construction du chemin complet du fichier\n            file_path = os.path.join(root, file_name)\n            # Ajouter le chemin du fichier au dictionnaire",
+        "detail": "tache1",
+        "documentation": {}
+    },
+    {
+        "label": "resultat",
+        "kind": 5,
+        "importPath": "tache1",
+        "description": "tache1",
+        "peekOfCode": "resultat = chercher_fichiers_identiques(folder)\n# Traiter les fichiers identiques\nfor nom_fichier, chemins in resultat.items():\n    if len(chemins) > 1 :\n        output_file_path = os.path.join(output, nom_fichier)\n        print(output_file_path)\n           # Vérifier si le fichier de sortie existe déjà\n        if os.path.exists(output_file_path):\n            print(f\"Le fichier '{output_file_path}' existe déjà.\")\n        else:",
+        "detail": "tache1",
+        "documentation": {}
+    }
+]
