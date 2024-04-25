@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np 
 
 xlsx_path = 'TP Data 2024 - FISA/activites.xlsx'
 db_path = 'tache2/db_full.csv'
@@ -31,25 +32,40 @@ print("Done dropping N/A from Excel !")
 
 print(df_excel)
 
+labelled_dataset = pd.DataFrame()
 instances = {}
+
+labels= {'Saber': 1,'Aera': 2, 'Nett': 3, 'Asp': 4, 'AS1': 5, 'Bougie': 6, 'SdB': 7, 'BricoP': 8, 'BricoC': 9, 'Oeuf':10}
 
 for idact, act in enumerate(df_excel['activity']):
     start = df_excel['Started'][idact]
     end = df_excel['Ended'][idact]
 
     new_instance = base[(base['Time'] >= start) & (base['Time'] <= end)].reset_index(drop=True).sort_values(by='Time').drop(columns='Time')
+
+    new_instance['label'] = labels[act]*np.ones(len(new_instance))
+
+    labelled_dataset = pd.concat([labelled_dataset,new_instance],ignore_index=True)
+
     if not act in instances:
         instances[act] = [new_instance]
     else :
         instances[act].append(new_instance)
 
+
+print("Saving labels to disk...")
+labelled_dataset.to_csv('tache3/labels.csv', index = False, sep = ';')
+print("Done saving labels to disk !")
+
 def averageSignature(instances):
 
     df_avg = pd.DataFrame(instances[0])
-
+    df_avg = df_avg.drop('label', axis=1)
     for i in range(1, len(instances)): 
 
         current_instance = instances[i] 
+        current_instance = current_instance.drop('label', axis=1)
+
         min_rows = min(current_instance.shape[0], df_avg.shape[0])
 
         for row in range(min_rows):
@@ -62,14 +78,12 @@ def averageSignature(instances):
     df_avg = df_avg.dropna()
 
     return df_avg
-avgAS1 = averageSignature(instances['AS1'])
-avgOeuf = averageSignature(instances['Oeuf'])
 
 # Plotting the average signature for AS1
 fig = plt.figure(figsize=(10, 6))
-print(avgAS1)
 
 i = 0
+
 
 for activity in instances.keys():
     i+= 1

@@ -206,68 +206,68 @@ def cleanup_files(input_files):
 files_to_clean = chercher_fichiers_identiques(folder)
 files_clean = cleanup_files(files_to_clean)
 
-#plt.figure(figsize=(10, 2))  # Plot overview of the files
-#date_format = mdates.DateFormatter('%d-%b')
-#
-#plt.subplot(3,2,1) # MOD1
-#plt.subplots_adjust(top=8)
-#plt.title("MOD1 (Temperature x Time)")
-#print("Plotting mod1...")
-#plt.plot(files_clean['mod1']['Time'],files_clean['mod1']['Temperature'])
-#plt.gca().xaxis.set_major_formatter(date_format)
-#plt.xticks(rotation=45)
-#print("Done Plotting mod1 !")
-#
-#
-#plt.subplot(3,2,2) # MOD2
-#plt.subplots_adjust(top=8)
-#plt.title("MOD2 (Temperature x Time)")
-#
-#print("Plotting mod2...")
-#plt.plot(files_clean['mod2']['Time'],files_clean['mod2']['Temperature'])
-#plt.gca().xaxis.set_major_formatter(date_format)
-#plt.xticks(rotation=45)
-#print("Done plotting mod2 !")
-#
-#plt.subplot(3,2,3) # POD 200085
-#plt.subplots_adjust(top=8)
-#plt.title("POD 200085 (Temperature x Time)")
-#print("Plotting pod 200085...")
-#plt.plot(files_clean['pod 200085']['Time'],files_clean['pod 200085']['temperature'])
-#plt.gca().xaxis.set_major_formatter(date_format)
-#plt.xticks(rotation=45)
-#print("Done plotting pod 200085 !")
-#
-#plt.subplot(3,2,4) # Piano PICO
-#plt.subplots_adjust(top=8)
-#plt.title("PICO (Temperature x Time)")
-#print("Plotting pico...")
-#plt.plot(files_clean['pico']['Time'],files_clean['pico']['bme68x_temp'])
-#plt.gca().xaxis.set_major_formatter(date_format)
-#plt.xticks(rotation=45)
-#print("Done plotting pico !")
-#
-#print("Plotting thick...")
-#plt.subplot(3,2,5) # Piano Thick
-#plt.subplots_adjust(top=8)
-#plt.title("THICK (TGS2620 x Time)")
-#plt.plot(files_clean['thick']['Time'], files_clean['thick']['piano_TGS2620I00'])
-#plt.gca().xaxis.set_major_formatter(date_format)
-#plt.xticks(rotation=45)
-#print("Done plotting thick !")
-#
-#print("Plotting thin...")
-#plt.subplot(3,2,6) # Piano Thin
-#plt.subplots_adjust(top=8)
-#plt.title("THIN (GM102B x Time)")
-#plt.plot(files_clean['thin']['Time'],files_clean['thin']['piano_GM102BI00'])
-#plt.gca().xaxis.set_major_formatter(date_format)
-#plt.xticks(rotation=45)
-#print("Done plotting thin !")
-#
-#plt.subplots_adjust(left=0.1, bottom=0.06, right=0.9, top=0.96, wspace=0.2, hspace=0.2)
-#plt.savefig("plot.png")
-#plt.show()
+plt.figure(figsize=(10, 2))  # Plot overview of the files
+date_format = mdates.DateFormatter('%d-%b')
+
+plt.subplot(3,2,1) # MOD1
+plt.subplots_adjust(top=8)
+plt.title("MOD1 (Temperature x Time)")
+print("Plotting mod1...")
+plt.plot(files_clean['mod1']['Time'],files_clean['mod1']['Temperature'])
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.xticks(rotation=45)
+print("Done Plotting mod1 !")
+
+
+plt.subplot(3,2,2) # MOD2
+plt.subplots_adjust(top=8)
+plt.title("MOD2 (Temperature x Time)")
+
+print("Plotting mod2...")
+plt.plot(files_clean['mod2']['Time'],files_clean['mod2']['Temperature'])
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.xticks(rotation=45)
+print("Done plotting mod2 !")
+
+plt.subplot(3,2,3) # POD 200085
+plt.subplots_adjust(top=8)
+plt.title("POD 200085 (Temperature x Time)")
+print("Plotting pod 200085...")
+plt.plot(files_clean['pod 200085']['Time'],files_clean['pod 200085']['temperature'])
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.xticks(rotation=45)
+print("Done plotting pod 200085 !")
+
+plt.subplot(3,2,4) # Piano PICO
+plt.subplots_adjust(top=8)
+plt.title("PICO (Temperature x Time)")
+print("Plotting pico...")
+plt.plot(files_clean['pico']['Time'],files_clean['pico']['bme68x_temp'])
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.xticks(rotation=45)
+print("Done plotting pico !")
+
+print("Plotting thick...")
+plt.subplot(3,2,5) # Piano Thick
+plt.subplots_adjust(top=8)
+plt.title("THICK (TGS2620 x Time)")
+plt.plot(files_clean['thick']['Time'], files_clean['thick']['piano_TGS2620I00'])
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.xticks(rotation=45)
+print("Done plotting thick !")
+
+print("Plotting thin...")
+plt.subplot(3,2,6) # Piano Thin
+plt.subplots_adjust(top=8)
+plt.title("THIN (GM102B x Time)")
+plt.plot(files_clean['thin']['Time'],files_clean['thin']['piano_GM102BI00'])
+plt.gca().xaxis.set_major_formatter(date_format)
+plt.xticks(rotation=45)
+print("Done plotting thin !")
+
+plt.subplots_adjust(left=0.1, bottom=0.06, right=0.9, top=0.96, wspace=0.2, hspace=0.2)
+plt.savefig("plot.png")
+plt.show()
 
 
 print("Averaging MOD frames...")
