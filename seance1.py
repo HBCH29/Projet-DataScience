@@ -205,6 +205,7 @@ def cleanup_files(input_files):
 
 files_to_clean = chercher_fichiers_identiques(folder)
 files_clean = cleanup_files(files_to_clean)
+
 plt.figure(figsize=(10, 2))  # Plot overview of the files
 date_format = mdates.DateFormatter('%d-%b')
 
@@ -269,3 +270,37 @@ plt.savefig("plot.png")
 plt.show()
 
 
+print("Averaging MOD frames...")
+files_clean['mod1']['Time'] = files_clean['mod1']['Time'].dt.round('10 s')
+files_clean['mod2']['Time'] = files_clean['mod2']['Time'].dt.round('10 s')
+print("Done averaging MOD frames !")
+
+
+print("Grouping MOD frames...")
+mod1_avg = files_clean['mod1'].groupby('Time').mean()
+mod2_avg = files_clean['mod2'].groupby('Time').mean()
+print("Done grouping MOD frames !")
+
+print("Merging piano dfs...")
+piano_merged = pd.merge(files_clean['thin'], files_clean['thick'], on='Time')
+print("Done merging piano dfs !")
+
+print("Merging pod dfs...")
+pod_merged = pd.merge(files_clean['pod 200085'], pd.merge(files_clean['pod 200086'], files_clean['pod 200088'], on='Time'), on='Time')
+print("Done merging pod dfs !")
+
+print("Merging MOD dfs...")
+mod_merged = pd.merge(mod1_avg, mod2_avg, on='Time')
+print("Done merging MOD dfs !")
+
+print("Merging all the dfs...")
+dfs_merged = pd.merge(piano_merged, pd.merge(pod_merged, pd.merge(files_clean['pico'], mod_merged, on='Time'), on='Time'), on='Time')
+print("Done merging all the dfs !")
+
+print(dfs_merged)
+
+dfs_merged_output = 'tache2/db_full.csv'
+
+print("Saving full DF to disk...")
+dfs_merged.to_csv(dfs_merged_output, index=False)
+print("Done saving full DF to disk !")
