@@ -55,8 +55,11 @@ print("Accuracy:", accuracy_score(y_test_selected, y_pred))
 print("Confusion Matrix:\n", confusion_matrix(y_test_selected, y_pred))
 
 # Cross-validation
+
+print("Cross validating...")
 scores = cross_validate(knn, X_selected, y, cv=5, scoring='f1_macro', return_train_score=True)
 
+print("Done cross validating !")
 print("Training Scores:", scores['train_score'])
 print("Testing Scores:", scores['test_score'])
 
