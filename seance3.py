@@ -36,32 +36,32 @@ print(f"Dropped columns {dropped_features}")
 # Shuffle and split data
 X_selected_sparse = coo_matrix(X_selected)
 X_selected, X_selected_sparse, y = shuffle(X_selected, X_selected_sparse, y)
-X_train_selected, X_test_selected, y_train_selected, y_test_selected = train_test_split(X_selected, y, test_size=0.2)
+X_train, X_test, y_train_selected, y_test_selected = train_test_split(X_selected, y, test_size=0.2)
 
 # Standardize features
 scaler = StandardScaler()
-X_train_selected = scaler.fit_transform(X_train_selected)
-X_test_selected = scaler.transform(X_test_selected)
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
 # Classifier
 knn = KNeighborsClassifier(n_neighbors=4)  # You can adjust the number of neighbors as needed
-knn.fit(X_train_selected, y_train_selected)
+knn.fit(X_train, y_train_selected)
 
 # Prediction
-y_pred_selected = knn.predict(X_test_selected)
+y_pred = knn.predict(X_test)
 
 # Evaluation
-print("Accuracy:", accuracy_score(y_test_selected, y_pred_selected))
-print("Confusion Matrix:\n", confusion_matrix(y_test_selected, y_pred_selected))
+print("Accuracy:", accuracy_score(y_test_selected, y_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_test_selected, y_pred))
 
 # Cross-validation
-scores_selected = cross_validate(knn, X_selected, y, cv=5, scoring='f1_macro', return_train_score=True)
+scores = cross_validate(knn, X_selected, y, cv=5, scoring='f1_macro', return_train_score=True)
 
-print("Training Scores:", scores_selected['train_score'])
-print("Testing Scores:", scores_selected['test_score'])
+print("Training Scores:", scores['train_score'])
+print("Testing Scores:", scores['test_score'])
 
-print("Cross-Validation Scores:", scores_selected)
-print(f"Average F1 : {np.average(scores_selected['test_score'])}")
+print("Cross-Validation Scores:", scores)
+print(f"Average F1 : {np.average(scores['test_score'])}")
 print("-------------------")
 
 # Uncomment if you want to test model's predictions
